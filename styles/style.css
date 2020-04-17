@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Quantico&display=swap');
+
+*{
+    font-family: 'Quantico', sans-serif;
+}
+body{
+    
+    background-color: #355766;
+}
+
+.calculator-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width : 315px;
+    height: 450px;
+    transform: translateX(-50%) translateY(-50%);
+    border-radius: 10px;
+    background-color: #88bebd;
+
+}
+
+input {
+    margin: 0;
+    padding: 0;
+    
+}
+
+.button {
+    width: 70px;
+    height: 70px;
+    font-size: 25px;
+    margin: 2px;
+	box-shadow:inset 0px 2px 15px 3px #63676e;
+	background:linear-gradient(to bottom, #8f96a1 5%, #7f848f 100%);
+	border:1px solid #53575e;
+	cursor:pointer;
+	color:#ffffff;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #17181a;
+}
+.button:hover {
+	background:linear-gradient(to bottom, #7f848f 5%, #8f96a1 100%);
+	background-color:#415989;
+}
+.button:active {
+	position:relative;
+	top:1px;
+}
+
+
+.textview {
+    width: 95%;
+    margin-top: 8px;
+    margin-bottom: 5px;
+    margin-left: 7px;
+    font-size: 25px;
+    padding: 0;
+    border-radius: 5px;
+    height: 40px;
+    background-color: #1a2525;
+    color: #f4d695;
+}
