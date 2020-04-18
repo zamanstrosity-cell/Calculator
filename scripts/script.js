@@ -1,8 +1,8 @@
 class Calculator {
-    constructor(){
-        this.firstOperand = parseFloat(firstValue);
-        this.secondOperand = parseFloat(secondValue);
-        this.clear();
+    constructor(firstOperand, secondOperand){
+        this.firstOperand = firstValue;
+        this.secondOperand = secondValue;
+        this.reset = false;
     }
     clear(){
         text.innerHTML = "";
@@ -25,15 +25,16 @@ class Calculator {
                 result = first * second;
                 break;
             case "\u00f7":
+                if(second == 0){
+                    result = "DUMBASS";
+                    break;
+        }
                 result = first / second;
                 break;
             default:
                 return;
         }
         text.innerHTML = result;
-    }
-    display(){
-
     }
 }
 
@@ -48,24 +49,36 @@ const calculator = new Calculator(operator, firstValue, secondValue);
 
 numberButtons.forEach(button => {
     button.addEventListener('click', () => {
-        text.innerHTML += button.innerHTML;
-    })
-})
+        if(button.innerHTML === "\u2213" && text.innerHTML.includes("\u2213")){
+            return;
+        }
+        if(button.innerHTML === "." && text.innerHTML.includes(".")){
+            return;
+        }
+        else if(button.innerHTML === "\u2213" && text.innerHTML.includes("\u2213") !== true) {
+            text.innerHTML = "-" + text.innerHTML;
+            return;
+        }
+        else {
+            text.innerHTML += button.innerHTML;
+        }
+
+    });
+});
 
 operatorButtons.forEach(button => {
     button.addEventListener('click', () => {
         operator = button.innerHTML;
-        console.log(operator);
         firstValue = text.innerHTML;
-        console.log(firstValue);
         text.innerHTML = "";
     })
 })
 
 equalsButton.addEventListener('click', () => {
     secondValue = text.innerHTML;
-    console.log(secondValue);
     calculator.operate(operator);
+    firstValue = secondValue;
+    secondValue = text.innerHTML;
 })
 
 allClearButton.addEventListener('click', () => {
