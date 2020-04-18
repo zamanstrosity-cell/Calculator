@@ -1,71 +1,77 @@
-let buttons = [...document.querySelectorAll(".button")];
-let text = document.querySelector(".textview");
-let para = document.createElement("p");
-let operands = [];
-
-function changeText(button) {
-    para.textContent = para.textContent + button.value;
-    text.appendChild(para);
-}
-buttons.forEach(button => {
-    console.log(button.value);
-});
-buttons.forEach(button => {
-    switch (true) {
-    case (!button.classList.contains("operator")):
-        button.addEventListener('click', () => {
-        changeText(button);
-        });
-        break;
-    case (button.value == "AC"):
-        button.addEventListener('click', () => {
-        para.textContent = "";
-        });
-        break;
-    case (button.value == "x"):
-        button.addEventListener('click', () => {
-            para.textContent = "";
-            if (operands.length == 2){
-                para.textContent = operate(operands);
-            };
-        });
-        break;
-    case (button.value == "+"):
-        button.addEventListener('click', () => {
-            para.textContent = "";
-        })
-    default:
-}
-});
-
-
-function add([x, y]){
-    return x + y;
-}
-
-function substract([x, y]){
-    return x - y;
-}
-
-function multiply([x, y]){
-    return x * y;
-}
-
-function divide([x, y]){
-    return y == 0 ? 'THE WORLD JUST ENDED': x / y;
-}
-
-function operate([x, y]){
-    switch(operator){
-        case "x":
-            return multiply([x, y]);
-        case "+":
-            return add([x, y]);
-        case "-":
-            return substract([x, y]);
-        case "/":
-            return divide([x, y]);
-        default:
+class Calculator {
+    constructor(){
+        this.firstOperand = parseFloat(firstValue);
+        this.secondOperand = parseFloat(secondValue);
+        this.clear();
+    }
+    clear(){
+        text.innerHTML = "";
+    }
+    delete(){
+        text.innerHTML = text.innerHTML.slice(0, -1);
+    }
+    operate(operator){
+        let result, first, second;
+        first = parseFloat(firstValue);
+        second = parseFloat(secondValue);
+        switch (operator){
+            case "+":
+                result = first + second;
+                break;
+            case "-":
+                result = first - second;
+                break;
+            case "*":
+                result = first * second;
+                break;
+            case "\u00f7":
+                result = first / second;
+                break;
+            default:
+                return;
+        }
+        text.innerHTML = result;
+    }
+    display(){
 
     }
 }
+
+const numberButtons = document.querySelectorAll("[data-number]");
+const operatorButtons = document.querySelectorAll("[data-operator]");
+const equalsButton = document.querySelector("[data-equals]");
+const deleteButton = document.querySelector("[data-delete]");
+const allClearButton = document.querySelector("[data-all-clear]");
+const text = document.querySelector(".textview");
+let operator, firstValue, secondValue;
+const calculator = new Calculator(operator, firstValue, secondValue);
+
+numberButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        text.innerHTML += button.innerHTML;
+    })
+})
+
+operatorButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        operator = button.innerHTML;
+        console.log(operator);
+        firstValue = text.innerHTML;
+        console.log(firstValue);
+        text.innerHTML = "";
+    })
+})
+
+equalsButton.addEventListener('click', () => {
+    secondValue = text.innerHTML;
+    console.log(secondValue);
+    calculator.operate(operator);
+})
+
+allClearButton.addEventListener('click', () => {
+    calculator.clear();
+})
+
+deleteButton.addEventListener('click', () => {
+    calculator.delete();
+})
