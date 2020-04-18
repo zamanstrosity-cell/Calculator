@@ -1,19 +1,24 @@
 class Calculator {
-    constructor(firstOperand, secondOperand){
-        this.firstOperand = firstValue;
-        this.secondOperand = secondValue;
+    constructor(firstValue, secondValue){
+        this.firstValue = firstValue;
+        this.secondValue = secondValue;
         this.reset = false;
     }
     clear(){
         text.innerHTML = "";
+        operator = "";
+        firstValue = "";
+        secondValue = "";
     }
     delete(){
         text.innerHTML = text.innerHTML.slice(0, -1);
     }
     operate(operator){
+        secondValue = text.innerHTML;
         let result, first, second;
         first = parseFloat(firstValue);
         second = parseFloat(secondValue);
+        if(isNaN(first) || isNaN(second)){return;}
         switch (operator){
             case "+":
                 result = first + second;
@@ -35,6 +40,8 @@ class Calculator {
                 return;
         }
         text.innerHTML = result;
+        firstValue = result;
+        secondValue = "";
     }
 }
 
@@ -44,19 +51,23 @@ const equalsButton = document.querySelector("[data-equals]");
 const deleteButton = document.querySelector("[data-delete]");
 const allClearButton = document.querySelector("[data-all-clear]");
 const text = document.querySelector(".textview");
-let operator, firstValue, secondValue;
-const calculator = new Calculator(operator, firstValue, secondValue);
+let operator, firstValue, secondValue = "";
+const calculator = new Calculator(text, operator, firstValue, secondValue);
 
 numberButtons.forEach(button => {
     button.addEventListener('click', () => {
-        if(button.innerHTML === "\u2213" && text.innerHTML.includes("\u2213")){
-            return;
+        if(calculator.firstValue === "" && calculator.secondValue !== "" && calculator.reset){
+            text.innerHTML = "";
+            calculator.reset = false;
         }
         if(button.innerHTML === "." && text.innerHTML.includes(".")){
             return;
         }
-        else if(button.innerHTML === "\u2213" && text.innerHTML.includes("\u2213") !== true) {
+        if(button.innerHTML === "\u2213" && !text.innerHTML.includes("-")) {
             text.innerHTML = "-" + text.innerHTML;
+            return;
+        }
+        if(button.innerHTML === "\u2213" && text.innerHTML.includes("-")) {
             return;
         }
         else {
@@ -68,6 +79,10 @@ numberButtons.forEach(button => {
 
 operatorButtons.forEach(button => {
     button.addEventListener('click', () => {
+        if(firstValue !== ""){
+            operator = button.innerHTML;
+            calculator.operate(operator)
+        }
         operator = button.innerHTML;
         firstValue = text.innerHTML;
         text.innerHTML = "";
@@ -75,10 +90,10 @@ operatorButtons.forEach(button => {
 })
 
 equalsButton.addEventListener('click', () => {
+    calculator.reset = true;
     secondValue = text.innerHTML;
     calculator.operate(operator);
-    firstValue = secondValue;
-    secondValue = text.innerHTML;
+    firstValue = "";
 })
 
 allClearButton.addEventListener('click', () => {
@@ -88,3 +103,4 @@ allClearButton.addEventListener('click', () => {
 deleteButton.addEventListener('click', () => {
     calculator.delete();
 })
+
